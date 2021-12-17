@@ -2,7 +2,8 @@
 견주들을 위한 산책 장소 정보 제공 사이트
 
 #### 개발환경
-Flask(구름IDE 환경 사용), MySQL InnoDB(Workbench, SQLyog 사용)
+Flask(구름IDE 환경 사용), MySQL InnoDB(Workbench, SQLyog 사용)     
+HTML 디자인 - 부트스트랩 양식 사용
 
 #### 사용 방법
 시작      
