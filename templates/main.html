@@ -1,0 +1,222 @@
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <script>
+            alert("{{messages[-1]}}")
+        </script>
+    {% endif %}
+{% endwith %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="icon" href="../../favicon.ico"> -->
+
+    <title>댕댕메이트 - 메인</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">-->
+    <!-- Custom styles for this template -->
+    <link href="/static/css/jumbotron.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="/static/js/ie-emulation-modes-warning.js"></script>
+      
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>   -->
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        <div class="navbar-brand">
+          <a class="" href="#">댕댕메이트 | {{user_member_name}}님 안녕하세요.</a>
+          <a class="btn btn-default" role="button" onClick="location.href='/mypage'">마이페이지 &raquo;</a>
+          <a class="btn btn-primary" role="button" onClick="location.href='/logout'">로그아웃</a>  
+        </div>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right" action="/main/search/place" method="post">
+            <div class="form-group">
+              <input type="text" class="form-control pull-right" placeholder="Search Place" name="searchPlace" id="searchPlace">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+          </form>
+        <form class="navbar-form navbar-right" action="/main/search/posting" method="post">
+            <div class="form-group">
+              <input type="text" class="form-control pull-right" placeholder="Search Posting" name="searchPosting" id="searchPosting">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+          </form>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h2>댕댕메이트와 함께하는 즐거운 산책 시간!</h2>
+        <p>산책 장소 정보를 공유하고 함께 공원에 갈 산책메이트를 구해요!</p>
+        <div> 
+            <div class="dropdown">    
+           <select id="city" class="btn btn-success dropdown-toggle" onchange="categoryChange(this)">
+                 <option value="default" selected="selected">도/시</option>
+                 {% for q in range(city_len) %}
+                 <option value="{{city_id[q]}}">{{city[q]}}</option>
+                 {% endfor %}
+                </select><select id="address" name="address" class="btn btn-success dropdown-toggle" onchange="placeChange(this)">
+                 <option value="default" selected="selected">시/군/구</option>
+                </select>
+                <script>
+                function categoryChange(e) {
+	                var target = document.getElementById("address");
+                    target.options.length = 0;
+                    
+                    var opt = document.createElement("option");
+	                opt.value = "default";
+	                opt.innerHTML = "시/군/구";
+	                target.appendChild(opt);
+                    
+	                for (var q=0; q<{{gu_len|safe}}; q++)
+	                {
+                        var val = {{gu_city_id|tojson}}[q];
+	                    if(e.value == val) {    
+	                        var opt = document.createElement("option");
+	                        opt.value = {{address_id|tojson}}[q];
+	                        opt.innerHTML = {{gu|tojson}}[q];
+	                        target.appendChild(opt);
+	                    }
+	                }
+                    var target = document.getElementById("place");
+                    target.options.length = 0;
+                    
+                    var opt = document.createElement("option");
+	                opt.value = "default";
+	                opt.innerHTML = "장소 선택";
+	                target.appendChild(opt);    
+                }
+                </script>
+                <select id="place" name="place" class="btn btn-success dropdown-toggle" method="post">
+                 <option value="default" selected="selected">장소 선택</option>
+                </select>
+                <script>
+                function placeChange(e) {
+	                var target = document.getElementById("place");
+                    target.options.length = 0;
+                    
+                    if (e.value == "default")
+                    {
+                        var opt = document.createElement("option");
+	                    opt.value = "default";
+	                    opt.innerHTML = "장소 선택";
+	                    target.appendChild(opt);
+                    }
+                    
+                    var count =0;
+	                for (var q=0; q<{{place_len|safe}}; q++)
+	                {
+                        var val = {{place_address_id|tojson}}[q];
+	                    if(e.value == val) {    
+	                        var opt = document.createElement("option");
+	                        opt.value = {{place_id|tojson}}[q];
+	                        opt.innerHTML = {{place_name|tojson}}[q];
+	                        target.appendChild(opt);
+                            count++;
+	                    }
+	                }
+                    if (count == 0)
+                    {
+                        var opt = document.createElement("option");
+	                    opt.value = "default";
+	                    opt.innerHTML = "장소가 없습니다.";
+	                    target.appendChild(opt);
+                        return;    
+                    }
+                }
+                </script>
+                <a class="btn btn-default" role="button" name="view" onClick="ViewPlace(this)">장소 페이지로 이동 &raquo;</a>
+                <a class="btn btn-default" role="button" name="applyPlace" onClick="ViewPlace(this)">산책 장소 추가 &raquo;</a>
+            <script>
+                function ViewPlace(e)
+                {
+                    if (e.name != "applyPlace") 
+                        var target = document.getElementById("place");
+                    else
+                        var target = document.getElementById("address");
+                    if (e.name != "applyPlace" && target.value == "default")
+                    {
+                        alert("장소를 선택해주세요.");  
+                    }
+                    else <!--place_id-->
+                    {
+                        if (e.name == "view") 
+                            window.location.href = "/main/place/" + target.value; <!-- 보는 거니까 해당 장소 id로 -->
+                        else if (e.name == "posting")
+                            window.location.href = "/posting/write/"+ target.value; <!-- place_id -->
+                        else if (e.name == "review")
+                            window.location.href = "/review/write/" + target.value; <!-- place_id -->
+                        else if (e.name == "applyPlace")
+                            window.location.href = "/main/place/write/" + target.value; <!-- address_id -->
+                    }    
+                }
+                </script>
+                <script>
+                </script>
+            </div>
+         </div>
+          
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-6">
+          <p><a class="btn btn-default" role="button" id="posting" name="posting" onClick="ViewPlace(this)" type="submit" form="info">게시글 쓰기 &raquo;</a></p>
+          <h2>새로운 게시글</h2>
+            {% for p in range(post_len) %}
+            <div style="border:1px dashed skyblue;" onClick="location.href='/posting/{{post_id[p]}}'">
+          <p>{{ post_title[p] }}</p>
+            <hr/>
+          <p>{{ post_content[p] }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6">
+          <p><a class="btn btn-default" role="button" name="review" onClick="ViewPlace(this)" type="submit" form="info">리뷰 쓰기 &raquo;</a></p>
+            <h2>새로운 리뷰</h2>
+            {% for p in range(review_len) %}
+          <div style="border:1px dashed skyblue;" onClick="location.href='/review/{{review_id[p]}}'">
+            <p>{{ review_title[p] }}</p>
+            <hr/>
+          <p>{{ review_stars[p] }}</p>
+          <p>{{ review_content[p] }}</p>  
+        </div>
+            {% endfor %}
+        </div>
+      </div>
+
+      <hr>
+    </div> <!-- /container -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="/static/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>

@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>댕댕메이트 - 마이페이지</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/blog.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="/static/js/ie-emulation-modes-warning.js"></script>
+      
+  </head>
+
+  <body>
+
+    <div class="blog-masthead">
+      <div class="container">
+        <nav class="blog-nav">
+          <a class="blog-nav-item" href="/mypage" target="_self">Home</a>
+          <a class="blog-nav-item" href="/mypage_review" target="_self">리뷰</a>
+          <a class="blog-nav-item" href="/mypage_posting" target="_self">게시글</a>
+          <a class="blog-nav-item" href="/mypage_bookmark" target="_self">즐겨찾기</a>
+          <a class="blog-nav-item active"  href="#">댓글</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="blog-header">
+          <nav>
+            <ul class="pager">
+              <li><a href="/main">메인으로</a></li>
+              <li><a href="/posting/write">게시글 쓰기</a></li>
+              <li><a href="/review/write">리뷰 쓰기</a></li>
+            </ul>
+         </nav>
+        <h1 class="blog-title">내가 쓴 댓글</h1>
+        <p class="lead blog-description">댓글을 누르면 게시글로 이동해요.</p>
+      </div>
+
+      <div class="row">
+
+        <div class="col-sm-8 blog-main">
+            {% if comment_count > 0 : %}
+              {% for q in range(comment_count-1, -1, -1) %}
+              <div class="blog-post" style="border:1px dashed black;" onClick="location.href='/posting/{{post_id[q]}}'">
+                  <h2 class="blog-post-title">{{post_title[q]}}</h2>
+                  <p class="blog-post-meta">by {{member_name}}</p>
+                  <p>{{comment_content[q]}}</p>
+              </div>
+              {% endfor %}
+          {% endif %}
+        </div><!-- /.blog-main -->
+
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">
+            <h4><span class="tab">닉네임_{{ member_name }}</span></h4>
+            <p><span class="tab">강아지 이름_{{ puppy_name }} </span></p>
+            <p><span class="tab">강아지 성격_{{ puppy_personality }} </span></p>
+            <p><span class="tab">산책 일정_{{ walk_schedule }} </span></p>
+            <p><span class="tab">주소_{{ city }} {{ gu }} </span></p>
+            </div>
+        </div><!-- /.blog-sidebar -->
+
+      </div><!-- /.row -->
+
+    </div><!-- /.container -->
+
+    <footer class="blog-footer">
+      <p>Blog template built for <a href="http://getbootstrap.com">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+      <p>
+        <a href="#">Back to top</a>
+      </p>
+    </footer>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="/static/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
