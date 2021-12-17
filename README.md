@@ -7,11 +7,11 @@ HTML 디자인 - 부트스트랩 양식 사용
 
 #### 사용 방법
 시작      
-\> service mysql start
+\> service mysql start      
 \> python3 application.py
 
 종료     
-\> Ctrl+C
+\> Ctrl+C          
 \> service mysql stop
 
 #### preview
